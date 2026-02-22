@@ -1,4 +1,6 @@
+import { data } from "./data.js";
 import "./components/clues.js";
+import "./components/grid.js";
 
 class XWord extends HTMLElement {
   constructor() {
@@ -7,8 +9,12 @@ class XWord extends HTMLElement {
   }
 
   async connectedCallback() {
+    await data.init(this.src);
+
+    const xWordGrid = document.createElement("x-word-grid");
     const xWordClues = document.createElement("x-word-clues");
 
+    this.shadowRoot.appendChild(xWordGrid);
     this.shadowRoot.appendChild(xWordClues);
   }
 

@@ -1,3 +1,7 @@
+import * as Types from "../types.js";
+import { data } from "../data.js";
+import { clueStore } from "../store.js";
+
 const template = document.createElement("template");
 template.innerHTML = `
   <style>
@@ -28,6 +32,36 @@ class XWordClues extends HTMLElement {
 
   connectedCallback() {
     const uls = this.shadowRoot.querySelectorAll("ul");
+
+    uls[0].append(...Object.keys(data.clues.Across).map(id => {
+      return this.createClueItem(id, data.clues.Across[id]);
+    }));
+
+    uls[1].append(...Object.keys(data.clues.Down).map(id => {
+      return this.createClueItem(id, data.clues.Down[id]);
+    }));
+
+    clueStore.subscribe((newValue, oldValue) => {
+      console.log(newValue, oldValue);
+    });
+
+    clueStore.update(Object.keys(data.clues.Across)[0]);
+  }
+
+  /**
+   * @param {string} id
+   * @param {Types.FormattedClue} clue
+   */
+  createClueItem(id, clue) {
+    const li = document.createElement("li");
+    li.dataset.id = id;
+    li.innerHTML = `<span>${clue.number}</span><span>${clue.text}</span>`;
+
+    li.addEventListener("click", () => {
+      clueStore.update(id);
+    });
+
+    return li;
   }
 }
 

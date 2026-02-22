@@ -1,0 +1,37 @@
+{
+    "title": "NYT The Mini. 20 Feb, 2026",
+    "dimensions": {
+        "width": 5,
+        "height": 5
+    },
+    "puzzle": [
+        [ 1, 2, 3, 4, 5 ],
+        [ 6, 0, 0, 0, 0 ],
+        [ 7, 0, 0, 0, 0 ],
+        [ 8, 0, 0, 0, 0 ],
+        [ "#", 9, 0, 0, "#" ]
+    ],
+    "solution": [
+        [ "W", "H", "I", "G", "S" ],
+        [ "H", "O", "T", "E", "L" ],
+        [ "Y", "O", "S", "H", "I" ],
+        [ "S", "T", "O", "R", "M" ],
+        [ null, "S", "K", "Y", null ]
+    ],
+    "clues": {
+        "Across": [
+            [ 1, "Political party that competed with Democrats during the 1830s-'50s" ],
+            [ 6, "Four Seasons, e.g." ],
+            [ 7, "Dinosaur in the Mario games" ],
+            [ 8, "Blizzard or hurricane" ],
+            [ 9, "We all look up to it" ]
+        ],
+        "Down": [
+            [ 1, "\"Oh yeah, ___ that?\"" ],
+            [ 2, "Says \"who\"?" ],
+            [ 3, "\"No worries\"" ],
+            [ 4, "Postmodern architect Frank" ],
+            [ 5, "Narrow" ]
+        ]
+    }
+}

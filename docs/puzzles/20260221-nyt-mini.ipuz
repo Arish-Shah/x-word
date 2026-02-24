@@ -1,0 +1,47 @@
+{
+  "title": "Mini Crossword",
+  "dimensions": {
+    "width": 7,
+    "height": 7
+  },
+  "puzzle": [
+    ["#","#",1,2,3,"#","#"],
+    ["#",4,0,0,0,5,"#"],
+    [6,0,0,0,0,0,7],
+    [8,0,0,"#",9,0,0],
+    [10,0,0,11,0,0,0],
+    ["#",12,0,0,0,0,"#"],
+    ["#","#",13,0,0,"#","#"]
+  ],
+  "clues": {
+    "Across": [
+      [1, "\"Jersey Shore\" channel"],
+      [4, "\"___ Knows\" (rhyming ad slogan)"],
+      [6, "Second-best-selling female musician of all time, behind Taylor Swift"],
+      [8, "Whiskey grain"],
+      [9, "Dreaded workday: Abbr."],
+      [10, "Backfiring blunder, in modern lingo"],
+      [12, "Lengthy sheet for a complicated board game, perhaps"],
+      [13, "Subtle \"Yes\""]
+    ],
+    "Down": [
+      [1, "In which high schoolers might role-play as ambassadors"],
+      [2, "This clue number"],
+      [3, "Paid via app, perhaps"],
+      [4, "Coat of paint"],
+      [5, "Falls in winter, say"],
+      [6, "Married title"],
+      [7, "___ Arbor, Mich."],
+      [11, "Woman in Progressive ads"]
+    ]
+  },
+  "solution": [
+    [null, null, "M", "T", "V", null, null],
+    [null, "L", "O", "W", "E", "S", null],
+    ["M", "A", "D", "O", "N", "N", "A"],
+    ["R", "Y", "E", null, "M", "O", "N"],
+    ["S", "E", "L", "F", "O", "W", "N"],
+    [null, "R", "U", "L", "E", "S", null],
+    [null, null, "N", "O", "D", null, null]
+  ]
+}

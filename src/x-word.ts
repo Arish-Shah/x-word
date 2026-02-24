@@ -1,3 +1,4 @@
+import "./components/nav";
 import "./components/clues";
 import "./components/grid";
 import { data } from "./state/data";
@@ -11,9 +12,11 @@ class XWord extends HTMLElement {
   async connectedCallback() {
     await data.init(this.src);
 
+    const nav = document.createElement("x-word-nav");
     const grid = document.createElement("x-word-grid");
     const clues = document.createElement("x-word-clues");
 
+    this.shadowRoot!.appendChild(nav);
     this.shadowRoot!.appendChild(grid);
     this.shadowRoot!.appendChild(clues);
   }

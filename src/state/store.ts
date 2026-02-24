@@ -29,4 +29,4 @@ class Store<T> {
   }
 }
 
-export const currentClueStore = new Store<string | null>(null);
+export const currentStore = new Store<string | null>(null);

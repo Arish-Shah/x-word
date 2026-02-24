@@ -4,39 +4,57 @@ import type {
   FormattedClues,
   IpuzPuzzle,
   IpuzClues,
-  FormattedClueValue,
 } from "../types";
 
 class Data {
   dimensions: Dimensions;
+  puzzle: IpuzPuzzle;
   clues: FormattedClues;
 
   async init(ipuzUrl: string) {
     const ipuz = await this.fetchIpuz(ipuzUrl);
-    const clueToCells = this.generateCells(ipuz.puzzle);
 
     this.dimensions = ipuz.dimensions;
+    this.puzzle = ipuz.puzzle;
+    const clueToCells = this.generateCells(ipuz.puzzle);
     this.clues = this.formatClues(ipuz.clues, clueToCells);
+  }
+
+  getPrevClue(clueId: string) {
+    const clueIds = Object.keys(this.clues);
+    const index = clueIds.indexOf(clueId);
+    if (index === 0) return clueIds[clueIds.length - 1];
+    return clueIds[index - 1];
+  }
+
+  getNextClue(clueId: string) {
+    const clueIds = Object.keys(this.clues);
+    const index = clueIds.indexOf(clueId);
+    if (index === clueIds.length - 1) return clueIds[0];
+    return clueIds[index + 1];
   }
 
   formatClues(clues: IpuzClues, clueToCells: Record<string, string[]>) {
     const format = (direction: "Across" | "Down"): FormattedClues => {
       return Object.fromEntries(clues[direction].map(clue => {
-        if (Array.isArray(clue)) {
-          const id = `${clue[0]}-${direction}`;
-          return [id, { id, number: clue[0], clue: clue[1], cells: clueToCells[id] }];
-        } else {
-          const id = `${clue.number}-${direction}`;
-          return [id, { id, ...clue, cells: clueToCells[id] }];
-        }
+        const id = `${clue[0]}-${direction}`;
+        return [id, {
+          id,
+          number: clue[0],
+          clue: clue[1],
+          cells: clueToCells[id]
+        }];
       }));
     };
-
     return { ...format("Across"), ...format("Down") };
   }
 
-  directionalClues() {
-    // here
+  cluesByDirection() {
+    const Across = Object.values(this.clues).filter((clue) =>
+      clue.id.endsWith("Across"));
+    const Down = Object.values(this.clues).filter((clue) =>
+      clue.id.endsWith("Down"));
+    return { Across, Down };
   }
 
   generateCells(puzzle: IpuzPuzzle) {
@@ -47,7 +65,6 @@ class Data {
 
       for (let c = 0; c < this.dimensions.width; c++) {
         let cell = puzzle[r][c];
-        if (typeof cell === "object") cell = cell.cell;
 
         switch (cell) {
           case "#": currentClue = null; break;
@@ -69,7 +86,6 @@ class Data {
 
       for (let r = 0; r < this.dimensions.height; r++) {
         let cell = puzzle[r][c];
-        if (typeof cell === "object") cell = cell.cell;
 
         switch (cell) {
           case "#": currentClue = null; break;

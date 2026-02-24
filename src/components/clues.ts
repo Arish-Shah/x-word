@@ -1,6 +1,6 @@
-import type { FormattedClue } from "../types";
+import type { FormattedClueValue } from "../types";
 import { data } from "../state/data";
-import { currentClueStore } from "../state/store";
+import { currentStore } from "../state/store";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -20,6 +20,8 @@ template.innerHTML = `
 `;
 
 class XWordClues extends HTMLElement {
+  subscription: () => void;
+
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -28,11 +30,12 @@ class XWordClues extends HTMLElement {
 
   connectedCallback() {
     const uls = this.shadowRoot!.querySelectorAll("ul");
+    const clues = data.cluesByDirection();
 
-    uls[0].append(...data.clues.Across.map(this.createClueItem));
-    uls[1].append(...data.clues.Down.map(this.createClueItem));
+    uls[0].append(...clues.Across.map(this.createClueItem));
+    uls[1].append(...clues.Down.map(this.createClueItem));
 
-    currentClueStore.subscribe((curr, prev) => {
+    this.subscription = currentStore.subscribe((curr, prev) => {
       if (prev)
         this.shadowRoot!.querySelector(`[data-id="${prev}"]`)!
           .classList.remove("selected");
@@ -41,19 +44,23 @@ class XWordClues extends HTMLElement {
         .classList.add("selected");
     });
 
-    currentClueStore.update(data.clues.Across[0].id);
+    currentStore.update(clues.Across[0].id);
   }
 
-  createClueItem({ id, number, clue }: FormattedClue) {
+  createClueItem({ id, number, clue }: FormattedClueValue) {
     const li = document.createElement("li");
     li.dataset.id = id;
     li.innerHTML = `<span>${number}</span><span>${clue}</span>`;
 
     li.addEventListener("click", () => {
-      currentClueStore.update(id);
+      currentStore.update(id);
     });
 
     return li;
+  }
+
+  disconnectedCallback() {
+    this.subscription();
   }
 }
 

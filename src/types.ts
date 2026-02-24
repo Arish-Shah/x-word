@@ -20,14 +20,9 @@ export type Dimensions = {
   height: number;
 };
 
-export type IpuzPuzzle = (string | number | IpuzPuzzleCellDetailed)[][];
+export type IpuzPuzzle = IpuzPuzzleCell[][];
 
-export type IpuzPuzzleCellDetailed = {
-  cell: number;
-  style: {
-    shapebg: "circle";
-  };
-};
+export type IpuzPuzzleCell = (string | number);
 
 export type IpuzClues = {
   Across: IpuzClue[];

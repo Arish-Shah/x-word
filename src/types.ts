@@ -1,12 +1,10 @@
-export type FormattedClues = {
-  Across: FormattedClue[];
-  Down: FormattedClue[];
-};
+export type FormattedClues = Record<string, FormattedClueValue>;
 
-export type FormattedClue = {
+export type FormattedClueValue = {
   id: string;
   number: number;
   clue: string;
+  cells: string[];
 };
 
 export type IpuzFile = {

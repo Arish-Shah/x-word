@@ -1,34 +1,42 @@
 import type {
   IpuzFile,
   Dimensions,
-  IpuzClues,
   FormattedClues,
   IpuzPuzzle,
-  FormattedClue,
+  IpuzClues,
+  FormattedClueValue,
 } from "../types";
 
 class Data {
   dimensions: Dimensions;
   clues: FormattedClues;
-  cells: Record<string, (string | null)>;
-  cluesMap: Record<string, FormattedClue>;
 
   async init(ipuzUrl: string) {
     const ipuz = await this.fetchIpuz(ipuzUrl);
+    const clueToCells = this.generateCells(ipuz.puzzle);
+
     this.dimensions = ipuz.dimensions;
-
-    this.cells = this.generateCells(ipuz.puzzle);
-    this.clues = this.formatClues(ipuz.clues);
-
-    this.cluesMap = this.generateCluesMap();
-    console.log(this.cluesMap);
+    this.clues = this.formatClues(ipuz.clues, clueToCells);
   }
 
-  generateCluesMap() {
-    const cluesMap = Object.fromEntries(this.clues.Across.map(clue => {
-      return [clue.id, { ...clue, cells: this.cells[clue.id] }];
-    }));
-    return cluesMap;
+  formatClues(clues: IpuzClues, clueToCells: Record<string, string[]>) {
+    const format = (direction: "Across" | "Down"): FormattedClues => {
+      return Object.fromEntries(clues[direction].map(clue => {
+        if (Array.isArray(clue)) {
+          const id = `${clue[0]}-${direction}`;
+          return [id, { id, number: clue[0], clue: clue[1], cells: clueToCells[id] }];
+        } else {
+          const id = `${clue.number}-${direction}`;
+          return [id, { id, ...clue, cells: clueToCells[id] }];
+        }
+      }));
+    };
+
+    return { ...format("Across"), ...format("Down") };
+  }
+
+  directionalClues() {
+    // here
   }
 
   generateCells(puzzle: IpuzPuzzle) {
@@ -53,7 +61,6 @@ class Data {
           }
         }
       }
-
       currentClue = null;
     }
 
@@ -76,31 +83,9 @@ class Data {
           }
         }
       }
-
       currentClue = null;
     }
-
     return cellsMap;
-  }
-
-  formatClues(clues: IpuzClues) {
-    const Across = clues.Across.map(clue => {
-      if (Array.isArray(clue)) {
-        return { id: clue[0] + "-Across", number: clue[0], clue: clue[1] };
-      } else {
-        return { ...clue, id: clue.number + "-Across" };
-      }
-    });
-
-    const Down = clues.Down.map(clue => {
-      if (Array.isArray(clue)) {
-        return { id: clue[0] + "-Down", number: clue[0], clue: clue[1] };
-      } else {
-        return { ...clue, id: clue.number + "-Down" };
-      }
-    });
-
-    return { Across, Down } satisfies FormattedClues;
   }
 
   async fetchIpuz(url: string): Promise<IpuzFile> {

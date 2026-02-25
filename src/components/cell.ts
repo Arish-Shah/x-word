@@ -8,6 +8,7 @@ template.innerHTML = `
 
     :host {
       position: relative;
+      background: white;
     }
 
     :host(.highlight) {
@@ -53,11 +54,27 @@ export class XWordCell extends HTMLElement {
 
   connectedCallback() {
     this.input = this.shadowRoot!.querySelector("input")!;
+    this.id = this.dataset.id!;
 
     this.input.addEventListener("click", () => {
-      const currentDirection = currentClueStore.state?.split("-")[1];
-      currentClueStore.update(data.cellToClue[this.dataset.id!][currentDirection!]);
-      this.input.focus();
+      const currentDirection = currentClueStore.state?.split("-")[1]!;
+
+      if (this.id === currentCellStore.state) {
+        const nextDirection = currentDirection === "Across" ? "Down" : "Across";
+        currentClueStore.update(data.cellToClue[this.id][nextDirection]);
+      } else {
+        currentClueStore.update(data.cellToClue[this.id][currentDirection!]);
+      }
+      currentCellStore.update(this.id);
+    });
+
+    currentClueStore.subscribe((newValue) => {
+      if (data.clues[newValue!].cells.indexOf(this.id) >= 0) this.highlight();
+      else this.unhighlight();
+    });
+
+    currentCellStore.subscribe((newValue) => {
+      if (newValue === this.id) this.input.focus();
     });
   }
 
@@ -80,7 +97,13 @@ export class XWordCell extends HTMLElement {
   }
 
   highlight() {
-    this.classList.toggle("highlight");
+    this.classList.add("highlight");
+  }
+
+  unhighlight() {
+    if (this.classList.contains("highlight")) {
+      this.classList.remove("highlight");
+    }
   }
 
   focus() {

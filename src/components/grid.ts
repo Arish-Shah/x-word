@@ -29,19 +29,6 @@ class XWordGrid extends HTMLElement {
         this.shadowRoot!.appendChild(this.createCell(`${r},${c}`, data.puzzle[r][c]));
       }
     }
-
-    currentClueStore.subscribe((newValue, oldValue) => {
-      const indices: string[] = [];
-      if (newValue) indices.push(...data.clues[newValue].cells);
-      if (oldValue) indices.push(...data.clues[oldValue].cells);
-      this.highlightCells(indices);
-    });
-
-    currentCellStore.subscribe((newValue) => {
-      if (newValue) {
-        this.focusCell(newValue);
-      }
-    });
   }
 
   createCell(id: string, cellData: IpuzPuzzleCell) {
@@ -51,17 +38,6 @@ class XWordGrid extends HTMLElement {
     else if (+cellData > 0) cellEl.label = cellData.toString();
 
     return cellEl;
-  }
-
-  highlightCells(indices: string[]) {
-    const cells = this.shadowRoot!
-      .querySelectorAll(createSelector(indices)) as NodeListOf<XWordCell>;
-    cells.forEach(cell => cell.highlight());
-  }
-
-  focusCell(index: string) {
-    (this.shadowRoot!.querySelector(`[data-id="${index}"]`) as XWordCell)
-      .focus();
   }
 }
 

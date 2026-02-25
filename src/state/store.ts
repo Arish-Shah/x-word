@@ -32,10 +32,9 @@ class Store<T> {
 }
 
 export const currentClueStore = new Store<string | null>(null);
+
 export const currentCellStore = new Store<string | null>(null);
 
 currentClueStore.subscribe((newValue) => {
-  if (newValue) {
-    currentCellStore.update(data.clues[newValue].cells[0]);
-  }
+  if (newValue) currentCellStore.update(data.clues[newValue].cells[0]);
 });

@@ -1,3 +1,5 @@
+import { data } from "./data";
+
 class Store<T> {
   state: T;
   listeners: ((newState: T, oldState: T) => void)[];
@@ -29,4 +31,11 @@ class Store<T> {
   }
 }
 
-export const currentStore = new Store<string | null>(null);
+export const currentClueStore = new Store<string | null>(null);
+export const currentCellStore = new Store<string | null>(null);
+
+currentClueStore.subscribe((newValue) => {
+  if (newValue) {
+    currentCellStore.update(data.clues[newValue].cells[0]);
+  }
+});

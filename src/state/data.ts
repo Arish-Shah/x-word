@@ -10,6 +10,7 @@ class Data {
   dimensions: Dimensions;
   puzzle: IpuzPuzzle;
   clues: FormattedClues;
+  cellToClue: Record<string, { Across: string; Down: string; }>;
 
   async init(ipuzUrl: string) {
     const ipuz = await this.fetchIpuz(ipuzUrl);
@@ -19,6 +20,23 @@ class Data {
 
     const clueToCells = this.generateCells(ipuz.puzzle);
     this.clues = this.formatClues(ipuz.clues, clueToCells);
+
+    this.cellToClue = this.mapCellToClues();
+  }
+
+  mapCellToClues() {
+    const cellToClueMap: Record<string, { Across: string; Down: string }> = {};
+
+    for (const [clueId, clueData] of Object.entries(this.clues)) {
+      const direction = clueId.endsWith("Across") ? "Across" : "Down";
+      for (const cell of clueData.cells) {
+        if (!cellToClueMap[cell]) {
+          cellToClueMap[cell] = { Across: "", Down: "" };
+        }
+        cellToClueMap[cell][direction] = clueId;
+      }
+    }
+    return cellToClueMap;
   }
 
   getPrevClue(clueId: string) {

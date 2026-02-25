@@ -1,6 +1,6 @@
 import type { FormattedClueValue } from "../types";
 import { data } from "../state/data";
-import { currentStore } from "../state/store";
+import { currentClueStore } from "../state/store";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -35,7 +35,7 @@ class XWordClues extends HTMLElement {
     uls[0].append(...clues.Across.map(this.createClueItem));
     uls[1].append(...clues.Down.map(this.createClueItem));
 
-    this.subscription = currentStore.subscribe((newValue, oldValue) => {
+    this.subscription = currentClueStore.subscribe((newValue, oldValue) => {
       if (oldValue) {
         this.shadowRoot!.querySelector(`[data-id="${oldValue}"]`)!
           .classList.remove("highlight");
@@ -44,7 +44,7 @@ class XWordClues extends HTMLElement {
         .classList.add("highlight");
     });
 
-    currentStore.update(clues.Across[0].id);
+    currentClueStore.update(clues.Across[0].id);
   }
 
   createClueItem({ id, number, clue }: FormattedClueValue) {
@@ -53,7 +53,7 @@ class XWordClues extends HTMLElement {
     li.innerHTML = `<span>${number}</span><span>${clue}</span>`;
 
     li.addEventListener("click", () => {
-      currentStore.update(id);
+      currentClueStore.update(id);
     });
     return li;
   }

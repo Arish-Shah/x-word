@@ -1,5 +1,5 @@
 import { data } from "../state/data";
-import { currentStore } from "../state/store";
+import { currentClueStore } from "../state/store";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -35,7 +35,7 @@ class XWordNav extends HTMLElement {
     const strong = this.shadowRoot!.querySelector("strong");
     const span = this.shadowRoot!.querySelector("span");
 
-    this.subscription = currentStore.subscribe((newVal) => {
+    this.subscription = currentClueStore.subscribe((newVal) => {
       if (newVal) {
         strong!.textContent = newVal.split("-").join(" ");
         span!.textContent = data.clues[newVal].clue;
@@ -43,13 +43,13 @@ class XWordNav extends HTMLElement {
     });
 
     buttons[0].addEventListener("click", _ => {
-      if (currentStore.state)
-        currentStore.update(data.getPrevClue(currentStore.state));
+      if (currentClueStore.state)
+        currentClueStore.update(data.getPrevClue(currentClueStore.state));
     });
 
     buttons[1].addEventListener("click", _ => {
-      if (currentStore.state)
-        currentStore.update(data.getNextClue(currentStore.state));
+      if (currentClueStore.state)
+        currentClueStore.update(data.getNextClue(currentClueStore.state));
     });
   }
 

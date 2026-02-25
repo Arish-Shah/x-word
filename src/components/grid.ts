@@ -1,8 +1,9 @@
 import type { IpuzPuzzleCell } from "../types";
 import { data } from "../state/data";
-import { currentStore } from "../state/store";
+import { currentCellStore, currentClueStore } from "../state/store";
 import { createSelector } from "../util";
 import "./cell";
+import { XWordCell } from "./cell";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -29,11 +30,17 @@ class XWordGrid extends HTMLElement {
       }
     }
 
-    currentStore.subscribe((newValue, oldValue) => {
+    currentClueStore.subscribe((newValue, oldValue) => {
       const indices: string[] = [];
       if (newValue) indices.push(...data.clues[newValue].cells);
       if (oldValue) indices.push(...data.clues[oldValue].cells);
       this.highlightCells(indices);
+    });
+
+    currentCellStore.subscribe((newValue) => {
+      if (newValue) {
+        this.focusCell(newValue);
+      }
     });
   }
 
@@ -50,6 +57,11 @@ class XWordGrid extends HTMLElement {
     const cells = this.shadowRoot!
       .querySelectorAll(createSelector(indices)) as NodeListOf<XWordCell>;
     cells.forEach(cell => cell.highlight());
+  }
+
+  focusCell(index: string) {
+    (this.shadowRoot!.querySelector(`[data-id="${index}"]`) as XWordCell)
+      .focus();
   }
 }
 

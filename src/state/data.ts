@@ -16,6 +16,7 @@ class Data {
 
     this.dimensions = ipuz.dimensions;
     this.puzzle = ipuz.puzzle;
+
     const clueToCells = this.generateCells(ipuz.puzzle);
     this.clues = this.formatClues(ipuz.clues, clueToCells);
   }

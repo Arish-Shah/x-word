@@ -5,8 +5,8 @@ import { currentStore } from "../state/store";
 const template = document.createElement("template");
 template.innerHTML = `
   <style>
-    .selected {
-      background: powderblue;
+    .highlight {
+      background: yellow;
     }
   </style>
   <div>
@@ -35,13 +35,13 @@ class XWordClues extends HTMLElement {
     uls[0].append(...clues.Across.map(this.createClueItem));
     uls[1].append(...clues.Down.map(this.createClueItem));
 
-    this.subscription = currentStore.subscribe((curr, prev) => {
-      if (prev)
-        this.shadowRoot!.querySelector(`[data-id="${prev}"]`)!
-          .classList.remove("selected");
-
-      this.shadowRoot!.querySelector(`[data-id="${curr}"]`)!
-        .classList.add("selected");
+    this.subscription = currentStore.subscribe((newValue, oldValue) => {
+      if (oldValue) {
+        this.shadowRoot!.querySelector(`[data-id="${oldValue}"]`)!
+          .classList.remove("highlight");
+      }
+      this.shadowRoot!.querySelector(`[data-id="${newValue}"]`)!
+        .classList.add("highlight");
     });
 
     currentStore.update(clues.Across[0].id);
@@ -55,7 +55,6 @@ class XWordClues extends HTMLElement {
     li.addEventListener("click", () => {
       currentStore.update(id);
     });
-
     return li;
   }
 

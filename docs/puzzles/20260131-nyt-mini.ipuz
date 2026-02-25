@@ -1,0 +1,51 @@
+{
+  "title": "NYT Mini. 31 Jan, 2026",
+  "dimensions": {
+    "width": 8,
+    "height": 7
+  },
+  "puzzle": [
+    ["#", 1, 2, 3, "#", 4, 5, 6],
+    ["#", 7, 0, 0, "#", 8, 0, 0],
+    [9, 0, 0, 0, "#", 10, 0, 0],
+    [11, 0, 0, 0, 12, 0, 0, 0],
+    [13, 0, 0, 0, 0, 0, 0, 0],
+    [14, 0, 0, "#", 15, 0, 0, 0],
+    [16, 0, 0, "#", "#", 17, 0, 0]
+  ],
+  "clues": {
+    "Across": [
+      [1, "Lifeguard's skill, for short"],
+      [4, "Health measure calculated using height and weight: Abbr."],
+      [7, "\"I've cracked the code!\""],
+      [8, "Long, long time"],
+      [9, "Like a desert's climate"],
+      [10, "\"We're still figuring it out\" inits."],
+      [11, "Holder of meats and cheeses at a supermarket"],
+      [13, "Needing careful handling"],
+      [14, "X-ray alternative"],
+      [15, "Zipped along"],
+      [16, "Suffix with legal"],
+      [17, "Ask nosy questions"]
+    ],
+    "Down": [
+      [1, "Header on a company's website, perhaps"],
+      [2, "Opponent of a Met or Marlin, in the N.L. East"],
+      [3, "Halves of diameters"],
+      [4, "Tech release that's not the finished product"],
+      [5, "Mafia member"],
+      [6, "\"Yes ___!\" (informal \"For sure!\")"],
+      [9, "Words from someone hoping to be friends on Facebook"],
+      [12, "Includes on an email chain"]
+    ]
+  },
+  "solution": [
+    [null, "C", "P", "R", null, "B", "M", "I"],
+    [null, "A", "H", "A", null, "E", "O", "N"],
+    ["A", "R", "I", "D", null, "T", "B", "D"],
+    ["D", "E", "L", "I", "C", "A", "S", "E"],
+    ["M", "E", "L", "I", "C", "A", "T", "E"],
+    ["M", "R", "I", null, "S", "P", "E", "D"],
+    ["E", "S", "E", null, null, "P", "R", "Y"]
+  ]
+}

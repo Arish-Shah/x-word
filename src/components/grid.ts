@@ -1,32 +1,15 @@
 import type { IpuzPuzzleCell } from "../types";
 import { data } from "../state/data";
 import { currentStore } from "../state/store";
+import { createSelector } from "../util";
+import "./cell";
 
 const template = document.createElement("template");
 template.innerHTML = `
   <style>
     :host {
       display: grid;
-      width: 300px;
-      border: 1px solid black;
     }
-
-    div {
-      border: 1px solid black;
-      aspect-ratio: 1/1;
-
-      &.blocked {
-        background: black;
-      }
-
-      &.highlight {
-        background: yellow;
-      }
-
-      &[data-label]::before {
-      }
-    }
-
   </style>
 `;
 
@@ -47,34 +30,27 @@ class XWordGrid extends HTMLElement {
     }
 
     currentStore.subscribe((newValue, oldValue) => {
-      if (oldValue) this.clearHighlight(data.clues[oldValue].cells);
-      if (newValue) this.addHighlight(data.clues[newValue].cells);
+      const indices: string[] = [];
+      if (newValue) indices.push(...data.clues[newValue].cells);
+      if (oldValue) indices.push(...data.clues[oldValue].cells);
+      this.highlightCells(indices);
     });
   }
 
   createCell(id: string, cellData: IpuzPuzzleCell) {
-    const div = document.createElement("div");
-    div.dataset.id = id;
-    div.textContent = "A";
+    const cellEl = document.createElement("x-word-cell") as XWordCell;
+    cellEl.dataset.id = id;
+    if (cellData === "#") cellEl.blocked = true;
+    else if (+cellData > 0) cellEl.label = cellData.toString();
 
-    if (typeof cellData === "object") cellData = cellData.cell;
-    if (cellData === "#") div.classList.add("blocked");
-    else if (+cellData > 0) div.dataset.label = cellData.toString();
-
-    return div;
+    return cellEl;
   }
 
-  clearHighlight(cells: string[]) {
-    for (let cell of cells)
-      this.shadowRoot!.querySelector(`[data-id="${cell}"]`)!
-        .classList.remove("highlight");
-  }
-
-  addHighlight(cells: string[]) {
-    for (let cell of cells)
-      this.shadowRoot!.querySelector(`[data-id="${cell}"]`)!
-        .classList.add("highlight");
+  highlightCells(indices: string[]) {
+    const cells = this.shadowRoot!
+      .querySelectorAll(createSelector(indices)) as NodeListOf<XWordCell>;
+    cells.forEach(cell => cell.highlight());
   }
 }
 
-customElements.define("x-word-grid", XWordGrid);
+customElements.define("x-word-grid", XWordGrid)

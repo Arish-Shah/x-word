@@ -1,0 +1,47 @@
+{
+  "title": "Mini Crossword",
+  "dimensions": {
+    "width": 7,
+    "height": 7
+  },
+  "puzzle": [
+    [1, 2, 3, "#", 4, 5, 6],
+    [7, 0, 0, "#", 8, 0, 0],
+    [9, 0, 0, 10, 0, 0, 0],
+    [11, 0, 0, 0, 0, 0, 0],
+    [12, 0, 0, 0, 0, 0, 0],
+    ["#", 13, 0, 0, 0, 0, "#"],
+    ["#", "#", 14, 0, 0, "#", "#"]
+  ],
+  "clues": {
+    "Across": [
+      [1, "Org. with a Slam Dunk Contest"],
+      [4, "Menacing creature in \"The Lord of the Rings\""],
+      [7, "Spherical shape"],
+      [8, "Greek \"r\""],
+      [9, "Symbol on Hawaii's license plate"],
+      [11, "Magazine with show listings"],
+      [12, "Showed support to, as a text message"],
+      [13, "Moves up the rankings"],
+      [14, "Kind of lighting whose first letter stands for \"light\""]
+    ],
+    "Down": [
+      [1, "The Australian continent moves subtly this direction each year (about 3 inches)"],
+      [2, "More courageous"],
+      [3, "Virginia governor Spanberger"],
+      [4, "Went around the world?"],
+      [5, "Colossus of ___, one of the Seven Wonders of the Ancient World"],
+      [6, "Intimidated"],
+      [10, "Hospital worker"]
+    ]
+  },
+  "solution": [
+    ["N", "B", "A", null, "O", "R", "C"],
+    ["O", "R", "B", null, "R", "H", "O"],
+    ["R", "A", "I", "N", "B", "O", "W"],
+    ["T", "V", "G", "U", "I", "D", "E"],
+    ["H", "E", "A", "R", "T", "E", "D"],
+    [null, "R", "I", "S", "E", "S", null],
+    [null, null, "L", "E", "D", null, null]
+  ]
+}

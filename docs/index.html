@@ -23,10 +23,6 @@
     <script type="module">
       import "./x-word.js";
 
-      if (!window.IS_PRODUCTION) {
-        new EventSource("/esbuild").addEventListener("change", () => location.reload());
-      }
-
       const params = new URLSearchParams(location.search);
       let ipuzSrc = params.get("ipuz");
 

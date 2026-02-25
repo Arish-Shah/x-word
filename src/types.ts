@@ -1,3 +1,4 @@
+// Formatted Clues Types
 export type FormattedClues = Record<string, FormattedClueValue>;
 
 export type FormattedClueValue = {
@@ -7,6 +8,7 @@ export type FormattedClueValue = {
   cells: string[];
 };
 
+// Ipuz File Types
 export type IpuzFile = {
   title: string;
   dimensions: Dimensions;
@@ -22,6 +24,11 @@ export type Dimensions = {
 
 export type IpuzPuzzle = IpuzPuzzleCell[][];
 
+/**
+ * blocked/black cells are marked with "#"
+ * cells with labels contain label number
+ * cells without labels have 0
+ */
 export type IpuzPuzzleCell = (string | number);
 
 export type IpuzClues = {
@@ -33,3 +40,8 @@ export type IpuzClue = {
   number: number;
   clue: string;
 } | [number, string];
+
+/**
+ * blocked cells are marked with null
+ */
+export type IpuzSolutionCell = (string | null);

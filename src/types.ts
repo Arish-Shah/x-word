@@ -14,7 +14,7 @@ export type IpuzFile = {
   dimensions: Dimensions;
   puzzle: IpuzPuzzle;
   clues: IpuzClues;
-  solution: (string | null)[][];
+  solution: IpuzSolution;
 };
 
 export type Dimensions = {
@@ -41,7 +41,9 @@ export type IpuzClue = {
   clue: string;
 } | [number, string];
 
+export type IpuzSolution = IpuzSolutionCell[][];
+
 /**
- * blocked cells are marked with null
+ * blocked/black cells are marked with "#"
  */
-export type IpuzSolutionCell = (string | null);
+export type IpuzSolutionCell = string;

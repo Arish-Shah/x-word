@@ -1,0 +1,143 @@
+{
+  "version": "http://ipuz.org/v2",
+  "kind": ["http://ipuz.org/crossword#1"],
+  "copyright": "2024",
+  "author": "Anonymous",
+  "title": "Thanksgiving Crossword",
+  "intro": "Some pieces of [circled letters] at the Thanksgiving table",
+  "dimensions": {
+    "width": 7,
+    "height": 8
+  },
+  "puzzle": [
+    [1, 2, 3, 4, 5, 6, 7],
+    [8, 0, 0, 0, 0, 0, 0],
+    [9, 0, 0, 0, 0, 0, 0],
+    [10, 0, 0, 0, "#", "#", "#"],
+    ["#", "#", "#", 11, 12, 13, 14],
+    [15, 16, 17, 0, 0, 0, 0],
+    [{"cell": 18, "style": {"shapebg": "circle"}}, {"cell": 0, "style": {"shapebg": "circle"}}, {"cell": 0, "style": {"shapebg": "circle"}}, 0, {"cell": 0, "style": {"shapebg": "circle"}}, {"cell": 0, "style": {"shapebg": "circle"}}, {"cell": 0, "style": {"shapebg": "circle"}}],
+    [19, 0, 0, 0, 0, "#", "#"]
+  ],
+  "solution": [
+    ["F", "E", "A", "S", "T", "E", "D"],
+    ["A", "L", "L", "T", "I", "M", "E"],
+    ["I", "M", "P", "U", "L", "S", "E"],
+    ["R", "O", "O", "F", "#", "#", "#"],
+    ["#", "#", "#", "F", "A", "S", "T"],
+    ["B", "R", "U", "I", "S", "E", "R"],
+    ["T", "U", "R", "N", "K", "E", "Y"],
+    ["W", "I", "N", "G", "S", "#", "#"]
+  ],
+  "clues": {
+    "Across": [
+      {
+        "number": 1,
+        "clue": "Enjoyed a Thanksgiving meal",
+        "enumeration": 7
+      },
+      {
+        "number": 8,
+        "clue": "Back half of a GOAT?",
+        "enumeration": 7
+      },
+      {
+        "number": 9,
+        "clue": "Sudden urge",
+        "enumeration": 7
+      },
+      {
+        "number": 10,
+        "clue": "Santa's landing place",
+        "enumeration": 4
+      },
+      {
+        "number": 11,
+        "clue": "Abstain from eating",
+        "enumeration": 4
+      },
+      {
+        "number": 15,
+        "clue": "Tough guy",
+        "enumeration": 7
+      },
+      {
+        "number": 18,
+        "clue": "Ready to use without further assembly",
+        "enumeration": 7
+      },
+      {
+        "number": 19,
+        "clue": "Some pieces of [circled letters] at the Thanksgiving table",
+        "enumeration": 5
+      }
+    ],
+    "Down": [
+      {
+        "number": 1,
+        "clue": "Inside the foul line, in baseball",
+        "enumeration": 4
+      },
+      {
+        "number": 2,
+        "clue": "Furry monster with a falsetto",
+        "enumeration": 4
+      },
+      {
+        "number": 3,
+        "clue": "Pet food brand",
+        "enumeration": 4
+      },
+      {
+        "number": 4,
+        "clue": "Thanksgiving side dish that can fill the [circled letters]",
+        "enumeration": 8
+      },
+      {
+        "number": 5,
+        "clue": "Shop ___ you drop",
+        "enumeration": 3
+      },
+      {
+        "number": 6,
+        "clue": "M M M M",
+        "enumeration": 3
+      },
+      {
+        "number": 7,
+        "clue": "Billy ___ Williams, actor who played Lando Calrissian in \"Star Wars\"",
+        "enumeration": 3
+      },
+      {
+        "number": 12,
+        "clue": "Requests",
+        "enumeration": 4
+      },
+      {
+        "number": 13,
+        "clue": "\"Get what I'm saying?\"",
+        "enumeration": 3
+      },
+      {
+        "number": 14,
+        "clue": "Give it a go",
+        "enumeration": 3
+      },
+      {
+        "number": 15,
+        "clue": "\"I should mention ...,\" for short",
+        "enumeration": 3
+      },
+      {
+        "number": 16,
+        "clue": "N.B.A. power forward ___ Hachimura",
+        "enumeration": 3
+      },
+      {
+        "number": 17,
+        "clue": "Large coffee dispenser",
+        "enumeration": 3
+      }
+    ]
+  }
+}

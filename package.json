@@ -1,0 +1,11 @@
+{
+  "name": "x-word",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "esbuild ./src/x-word.ts --bundle --outfile=./docs/x-word.js --servedir=./docs --watch",
+    "build": "esbuild ./src/x-word.ts --bundle --minify --outfile=./docs/x-word.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.27.3"
+  }
+}

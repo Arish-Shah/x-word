@@ -6,18 +6,18 @@ class XWord extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+    this.data = new Data(this.src);
   }
 
-  async connectedCallback() {
-    this.data = await Data.fetchIpuz(this.src);
+  connectedCallback() {
   }
 
   get src() {
     return this.getAttribute("src")!;
   }
 
-  set src(value: string) {
-    this.setAttribute("src", value);
+  set src(val: string) {
+    this.setAttribute("src", val);
   }
 }
 

@@ -1,16 +1,16 @@
 import type { Ipuz } from "../types";
-import { State } from "./state";
 
 export class Data {
-  private state: State;
-
-  constructor(id: string, ipuz: Ipuz) {
-    this.state = new State(id, ipuz.solution);
+  constructor(src: string) {
+    console.log(src);
+    this.fetchIpuz(src).then(data => console.log(data));
   }
 
-  static async fetchIpuz(url: string) {
+  async fetchIpuz(url: string): Promise<Ipuz> {
     const response = await fetch(url);
-    const ipuz = await response.json();
-    return new Data(url, ipuz);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ipuz: ${response.statusText}`);
+    }
+    return response.json() as Promise<Ipuz>;
   }
 }

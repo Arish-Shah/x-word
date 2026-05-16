@@ -1,23 +1,11 @@
-import { Data } from "./core/data";
+const template = document.createElement("template");
+template.innerHTML = `<h1>hello from x-word!</h1>`;
 
 class XWord extends HTMLElement {
-  private data: Data;
-
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    this.data = new Data(this.src);
-  }
-
-  connectedCallback() {
-  }
-
-  get src() {
-    return this.getAttribute("src")!;
-  }
-
-  set src(val: string) {
-    this.setAttribute("src", val);
+    this.shadowRoot!.appendChild(template.content.cloneNode(true));
   }
 }
 

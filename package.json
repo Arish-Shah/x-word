@@ -2,7 +2,6 @@
   "name": "x-word",
   "scripts": {
     "dev": "bun index.html",
-    "build:js": "bun build ./src/x-word.ts --outdir . --minify",
-    "build:html": "bun build index.html --outdir ./docs"
+    "build": "bun build index.html --outdir docs/"
   }
 }

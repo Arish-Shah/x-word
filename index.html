@@ -4,9 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>x-word</title>
-    <script src="./src/x-word.ts" type="module"></script>
+    <script src="./src/x-word.ts"></script>
   </head>
   <body>
-    <x-word src=""></x-word>
+    <div id="root"></div>
+    <script>
+      const xWord = document.createElement("x-word");
+      xWord.src = "";
+      document.querySelector("#root").appendChild(xWord);
+    </script>
   </body>
 </html>

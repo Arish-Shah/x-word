@@ -1,7 +1,7 @@
 {
   "name": "x-word",
   "scripts": {
-    "dev": "bun index.html",
-    "build": "bun build index.html --outdir docs/"
+    "dev": "bun --hot index.js",
+    "build": "bun build ./src/index.html --outdir docs/"
   }
 }

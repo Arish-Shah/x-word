@@ -1,3 +1,7 @@
+import type { XWordClues } from "./components/clues";
+import { Data } from "./core/data";
+import "./components/clues";
+
 class XWord extends HTMLElement {
   constructor() {
     super();
@@ -5,9 +9,12 @@ class XWord extends HTMLElement {
   }
 
   async connectedCallback() {
-    const response = await fetch(this.src);
-    const json = await response.json();
-    console.log(json);
+    const data = await Data.init(this.src);
+
+    const cluesEl = document.createElement("x-word-clues") as XWordClues;
+    cluesEl.clues = data.clues;
+
+    this.shadowRoot!.appendChild(cluesEl);
   }
 
   get src() {

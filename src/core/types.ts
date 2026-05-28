@@ -7,10 +7,10 @@ export type IpuzDimensions = {
 export type IpuzPuzzleCell = number | "#" | 0 | null | { cell: number | "#" | 0; style?: any };
 export type IpuzPuzzle = IpuzPuzzleCell[][];
 
-export type IpuzClueItem = [number, string] | { number: number; clue: string } | { label: string; clue: string; };
+export type IpuzClue = [number, string] | { number: number; clue: string };
 export type IpuzClues = {
-  Across: IpuzClueItem[];
-  Down: IpuzClueItem[];
+  Across: IpuzClue[];
+  Down: IpuzClue[];
 };
 
 export type IpuzSolutionCell = string | "#" | 0 | null;
@@ -25,8 +25,11 @@ export type Ipuz = {
 };
 
 /* parsed types */
-export type ParsedClueItem = { id: string; label: string; clue: string };
+export type ParsedClue = { number: number; clue: string, cells: string[] };
 export type ParsedClues = {
-  Across: ParsedClueItem[];
-  Down: ParsedClueItem[];
+  Across: Record<string, ParsedClue>;
+  Down: Record<string, ParsedClue>;
 };
+
+/* misc types */
+export type Dir = "A" | "D";

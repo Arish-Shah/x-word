@@ -1,20 +1,17 @@
-import type { XWordClues } from "./components/clues";
 import { Data } from "./core/data";
-import "./components/clues";
+
+const template = document.createElement("template");
+template.innerHTML = ``;
 
 class XWord extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+    this.shadowRoot!.appendChild(template.content.cloneNode(true));
   }
 
   async connectedCallback() {
     const data = await Data.init(this.src);
-
-    const cluesEl = document.createElement("x-word-clues") as XWordClues;
-    cluesEl.clues = data.clues;
-
-    this.shadowRoot!.appendChild(cluesEl);
   }
 
   get src() {

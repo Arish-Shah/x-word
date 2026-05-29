@@ -8,15 +8,18 @@ import type {
   ParsedClue,
   ParsedClues,
   Dir,
+  Direction,
 } from "./types";
 
 export class Data {
   clues: ParsedClues;
+  cellToClue: Record<Direction, Record<string, string>>;
 
   constructor(id: string, ipuz: Ipuz) {
     this.clues = this.parseClues(ipuz.clues);
     this.mapClueToCells(ipuz.puzzle, ipuz.dimensions);
-    console.log({ [id]: this.clues});
+    this.cellToClue = this.mapCellToClue();
+    console.log(this.clues, this.cellToClue);
   }
 
   parseClues(clues: IpuzClues): ParsedClues {
@@ -61,6 +64,17 @@ export class Data {
     const { width, height } = dimensions;
     walkDirection("A", width, height);
     walkDirection("D", height, width);
+  }
+
+  mapCellToClue() {
+    const mapDirection = (direction: Direction) => Object.fromEntries(
+      Object.entries(this.clues[direction])
+        .flatMap(([k, v]) => v.cells.map(cell => [cell, k]))
+    );
+    return {
+      Across: mapDirection("Across"),
+      Down: mapDirection("Down")
+    };
   }
 
   static async init(url: string) {

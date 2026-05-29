@@ -1,10 +1,12 @@
 // src/core/data.ts
 class Data {
   clues;
+  cellToClue;
   constructor(id, ipuz) {
     this.clues = this.parseClues(ipuz.clues);
     this.mapClueToCells(ipuz.puzzle, ipuz.dimensions);
-    console.log({ [id]: this.clues });
+    this.cellToClue = this.mapCellToClue();
+    console.log(this.clues, this.cellToClue);
   }
   parseClues(clues) {
     const parseClue = (clue, suffix) => Array.isArray(clue) ? [clue[0] + suffix, { number: clue[0], clue: clue[1], cells: [] }] : [clue.number + suffix, { ...clue, cells: [] }];
@@ -41,6 +43,13 @@ class Data {
     const { width, height } = dimensions;
     walkDirection("A", width, height);
     walkDirection("D", height, width);
+  }
+  mapCellToClue() {
+    const mapDirection = (direction) => Object.fromEntries(Object.entries(this.clues[direction]).flatMap(([k, v]) => v.cells.map((cell) => [cell, k])));
+    return {
+      Across: mapDirection("Across"),
+      Down: mapDirection("Down")
+    };
   }
   static async init(url) {
     const response = await fetch(url);

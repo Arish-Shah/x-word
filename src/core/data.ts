@@ -12,14 +12,15 @@ import type {
 } from "./types";
 
 export class Data {
+  ipuz: Ipuz;
   clues: ParsedClues;
   cellToClue: Record<Direction, Record<string, string>>;
 
   constructor(id: string, ipuz: Ipuz) {
+    this.ipuz = ipuz;
     this.clues = this.parseClues(ipuz.clues);
-    this.mapClueToCells(ipuz.puzzle, ipuz.dimensions);
+    this.mapClueToCells(ipuz.dimensions, ipuz.puzzle);
     this.cellToClue = this.mapCellToClue();
-    console.log(this.clues, this.cellToClue);
   }
 
   parseClues(clues: IpuzClues): ParsedClues {
@@ -34,7 +35,7 @@ export class Data {
     };
   }
 
-  mapClueToCells(puzzle: IpuzPuzzle, dimensions: IpuzDimensions) {
+  mapClueToCells(dimensions: IpuzDimensions, puzzle: IpuzPuzzle) {
     const value = (cell: IpuzPuzzleCell) =>
       typeof cell === "object" && cell !== null ? cell.cell : cell;
 

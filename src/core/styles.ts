@@ -2,11 +2,12 @@ const sheet = new CSSStyleSheet();
 sheet.replaceSync(`
   @layer {
     :root {
-      --x-word-bg: #000000;
-      --x-word-fg: #ffffff;
-      --x-word-select: #ffda00;
+      --x-word-bg: #ffffff;
+      --x-word-fg: #000000;
+      --x-word-selected: #ffda00;
       --x-word-highlight: #a7d8ff;
       --x-word-font: georgia;
+      --x-word-button: #bb3b80;
     }
 
     x-word {

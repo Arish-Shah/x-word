@@ -29,3 +29,5 @@ export type ParsedClues = Record<Direction, Record<string, ParsedClue>>;
 
 /* misc types */
 export type Dir = "A" | "D";
+
+export type Subscriber<T> = (value: T) => void;

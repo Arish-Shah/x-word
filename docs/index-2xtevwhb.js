@@ -78,18 +78,6 @@ class XWordGrid extends HTMLElement {
 }
 customElements.define("x-word-grid", XWordGrid);
 
-// src/core/state.ts
-class State {
-  data;
-  constructor(initialData) {
-    this.data = initialData;
-  }
-  update(data) {
-    this.data = data;
-  }
-}
-var currentClue = new State(null);
-
 // src/components/clues.ts
 var template2 = document.createElement("template");
 template2.innerHTML = `
@@ -97,13 +85,47 @@ template2.innerHTML = `
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :host {
+      font-size: 0.875rem;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 1.5rem;
+    }
+
+    h3 {
+      font-size: 1rem;
+      padding: 0.25rem 0;
+      border-top: 1px solid var(--x-word-button);
+    }
+
+    h3::after {
+      content: "";
+      display: block;
+      height: 1px;
+      opacity: 0.15;
+      background: var(--x-word-fg);
+      margin-top: 1rem;
     }
 
     ul {
       list-style-type: none;
+    }
+
+    li {
+      cursor: pointer;
+      padding: 0.5rem 0;
+      display: flex;
+      gap: 0.5rem;
+
+      &.selected {
+        background: var(--x-word-highlight);
+      }
+    }
+
+    span:first-of-type {
+      width: 1.5rem;
+      flex-shrink: 0;
+      text-align: right;
+      font-weight: bold;
     }
   </style>
   <div>
@@ -133,7 +155,8 @@ class XWordClues extends HTMLElement {
     li.innerHTML = `
       <span>${clue.number}</span><span>${clue.clue}</span>
     `;
-    li.addEventListener("click", (_) => currentClue.update(id));
+    if (id === "6A")
+      li.className = "selected";
     return li;
   }
 }
@@ -144,11 +167,12 @@ var sheet = new CSSStyleSheet;
 sheet.replaceSync(`
   @layer {
     :root {
-      --x-word-bg: #000000;
-      --x-word-fg: #ffffff;
-      --x-word-select: #ffda00;
+      --x-word-bg: #ffffff;
+      --x-word-fg: #000000;
+      --x-word-selected: #ffda00;
       --x-word-highlight: #a7d8ff;
       --x-word-font: georgia;
+      --x-word-button: #bb3b80;
     }
 
     x-word {

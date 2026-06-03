@@ -2,7 +2,7 @@
   "name": "x-word",
   "scripts": {
     "dev": "bun --hot index.js",
-    "prebuild": "rm docs/index*",
+    "prebuild": "rm -f docs/index*",
     "build": "bun build ./src/index.html --outdir docs/"
   }
 }

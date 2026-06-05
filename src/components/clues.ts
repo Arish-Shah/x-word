@@ -1,4 +1,5 @@
-import type { ParsedClue, ParsedClues } from "../core/types";
+import { currentClue } from "../core/signal";
+import type { ParsedClue, ParsedClues, Subscription } from "../core/types";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -9,7 +10,7 @@ template.innerHTML = `
       font-size: 0.875rem;
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 1rem;
     }
 
     h3 {
@@ -48,6 +49,12 @@ template.innerHTML = `
       text-align: right;
       font-weight: bold;
     }
+
+    @media (min-width: 980px) {
+      :host {
+        flex-direction: row;
+      }
+    }
   </style>
   <div>
     <h3>across</h3>
@@ -61,6 +68,7 @@ template.innerHTML = `
 
 export class XWordClues extends HTMLElement {
   clues!: ParsedClues;
+  currentClueSub!: Subscription;
 
   constructor() {
     super();
@@ -72,6 +80,9 @@ export class XWordClues extends HTMLElement {
     const uls = this.shadowRoot!.querySelectorAll("ul");
     uls[0].append(...Object.entries(this.clues.Across).map(this.createClue));
     uls[1].append(...Object.entries(this.clues.Down).map(this.createClue));
+
+    this.currentClueSub = currentClue.subscribe((id, prevId) => this.highlight(id, prevId));
+    currentClue.value = Object.keys(this.clues.Across)[0];
   }
 
   createClue([id, clue]: [string, ParsedClue]) {
@@ -79,8 +90,19 @@ export class XWordClues extends HTMLElement {
     li.innerHTML = `
       <span>${clue.number}</span><span>${clue.clue}</span>
     `;
-    if (id === "6A") li.className = "selected";
+    li.dataset.id = id;
+    li.addEventListener("click", () =>  currentClue.value = id);
     return li;
+  }
+
+  highlight(id: string, prevId: string) {
+    if (prevId)
+      this.shadowRoot!.querySelector(`[data-id="${prevId}"]`)!.classList.remove("selected");
+    this.shadowRoot!.querySelector(`[data-id="${id}"]`)!.classList.add("selected");
+  }
+
+  disconnectedCallback() {
+    this.currentClueSub.unsubscribe();
   }
 }
 

@@ -1,3 +1,7 @@
+// src/core/util.ts
+var coords = (input) => input.join(",");
+var getCellValue = (cell) => typeof cell === "object" && cell !== null ? cell.cell : cell;
+
 // src/core/data.ts
 class Data {
   ipuz;
@@ -10,14 +14,13 @@ class Data {
     this.cellToClue = this.mapCellToClue();
   }
   parseClues(clues) {
-    const parseClue = (clue, suffix) => Array.isArray(clue) ? [clue[0] + suffix, { number: clue[0], clue: clue[1], cells: [] }] : [clue.number + suffix, { ...clue, cells: [] }];
+    const parseClue = (clue, suffix) => Array.isArray(clue) ? [`${clue[0]}-${suffix}`, { number: clue[0], clue: clue[1], cells: [] }] : [`${clue.number}-${suffix}`, { ...clue, cells: [] }];
     return {
-      Across: Object.fromEntries(clues.Across.map((clue) => parseClue(clue, "A"))),
-      Down: Object.fromEntries(clues.Down.map((clue) => parseClue(clue, "D")))
+      Across: Object.fromEntries(clues.Across.map((clue) => parseClue(clue, "Across"))),
+      Down: Object.fromEntries(clues.Down.map((clue) => parseClue(clue, "Down")))
     };
   }
   mapClueToCells(dimensions, puzzle) {
-    const value = (cell) => typeof cell === "object" && cell !== null ? cell.cell : cell;
     const walkDirection = (direction, x, y) => {
       const clues = direction === "A" ? this.clues.Across : this.clues.Down;
       for (let i = 0;i < y; i++) {
@@ -25,7 +28,7 @@ class Data {
         let cells = [];
         for (let j = 0;j < x; j++) {
           const [r, c] = direction === "A" ? [i, j] : [j, i];
-          const cell = value(puzzle[r][c]);
+          const cell = getCellValue(puzzle[r][c]);
           if (cell === null || cell === "#") {
             if (id && id in clues)
               clues[id].cells = cells;
@@ -61,9 +64,32 @@ class Data {
 
 // src/components/grid.ts
 var template = document.createElement("template");
-template.innerHTML = ``;
+template.innerHTML = `
+  <style>
+    :host {
+      display: block;
+    }
+
+    svg {
+      width: 100%;
+      min-width: min(100%, 300px);
+    }
+
+    rect {
+      fill: var(--x-word-bg);
+      stroke: var(--x-word-fg);
+      stroke-width: 1;
+
+      &.blocked {
+        fill: var(--x-word-fg);
+        pointer-events: none;
+      }
+    }
+  </style>
+`;
 
 class XWordGrid extends HTMLElement {
+  CELL_SIZE = 32;
   dimensions;
   puzzle;
   constructor() {
@@ -72,11 +98,63 @@ class XWordGrid extends HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
   connectedCallback() {
+    const { height, width } = this.dimensions;
+    const gridHeight = height * this.CELL_SIZE + height + 1;
+    const gridWidth = width * this.CELL_SIZE + width + 1;
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", `0 0 ${gridWidth} ${gridHeight}`);
+    for (let r = 0;r < height; r++) {
+      for (let c = 0;c < width; c++) {
+        svg.appendChild(this.createCell(r, c));
+      }
+    }
     this.shadowRoot.appendChild(svg);
+  }
+  createCell(r, c) {
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.dataset.coord = coords([r, c]);
+    let cell = getCellValue(this.puzzle[r][c]);
+    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    rect.setAttribute("x", String(this.CELL_SIZE * c + c + 1));
+    rect.setAttribute("y", String(this.CELL_SIZE * r + r + 1));
+    rect.setAttribute("width", String(this.CELL_SIZE));
+    rect.setAttribute("height", String(this.CELL_SIZE));
+    if (cell === "#")
+      rect.classList.add("blocked");
+    else if (cell === null)
+      rect.classList.add("hidden");
+    g.appendChild(rect);
+    return g;
   }
 }
 customElements.define("x-word-grid", XWordGrid);
+
+// src/core/signal.ts
+class Signal {
+  _value;
+  subscribers;
+  constructor(initialValue) {
+    this._value = initialValue;
+    this.subscribers = [];
+  }
+  get value() {
+    return this._value;
+  }
+  set value(newValue) {
+    const previous = this._value;
+    this._value = newValue;
+    this.subscribers.forEach((sub) => sub(this._value, previous));
+  }
+  subscribe(callback) {
+    this.subscribers.push(callback);
+    return {
+      unsubscribe: () => {
+        this.subscribers = this.subscribers.filter((sub) => sub !== callback);
+      }
+    };
+  }
+}
+var currentClue = new Signal(null);
 
 // src/components/clues.ts
 var template2 = document.createElement("template");
@@ -88,7 +166,7 @@ template2.innerHTML = `
       font-size: 0.875rem;
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 1rem;
     }
 
     h3 {
@@ -127,6 +205,12 @@ template2.innerHTML = `
       text-align: right;
       font-weight: bold;
     }
+
+    @media (min-width: 980px) {
+      :host {
+        flex-direction: row;
+      }
+    }
   </style>
   <div>
     <h3>across</h3>
@@ -140,6 +224,7 @@ template2.innerHTML = `
 
 class XWordClues extends HTMLElement {
   clues;
+  currentClueSub;
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -149,15 +234,25 @@ class XWordClues extends HTMLElement {
     const uls = this.shadowRoot.querySelectorAll("ul");
     uls[0].append(...Object.entries(this.clues.Across).map(this.createClue));
     uls[1].append(...Object.entries(this.clues.Down).map(this.createClue));
+    this.currentClueSub = currentClue.subscribe((id, prevId) => this.highlight(id, prevId));
+    currentClue.value = Object.keys(this.clues.Across)[0];
   }
   createClue([id, clue]) {
     const li = document.createElement("li");
     li.innerHTML = `
       <span>${clue.number}</span><span>${clue.clue}</span>
     `;
-    if (id === "6A")
-      li.className = "selected";
+    li.dataset.id = id;
+    li.addEventListener("click", () => currentClue.value = id);
     return li;
+  }
+  highlight(id, prevId) {
+    if (prevId)
+      this.shadowRoot.querySelector(`[data-id="${prevId}"]`).classList.remove("selected");
+    this.shadowRoot.querySelector(`[data-id="${id}"]`).classList.add("selected");
+  }
+  disconnectedCallback() {
+    this.currentClueSub.unsubscribe();
   }
 }
 customElements.define("x-word-clues", XWordClues);
@@ -189,9 +284,16 @@ var template3 = document.createElement("template");
 template3.innerHTML = `
   <style>
     :host {
+      padding: 0.5rem;
       display: flex;
       flex-direction: column;
-      padding: 0.5rem;
+      gap: 1rem;
+    }
+
+    @media (min-width: 740px) {
+      :host {
+        flex-direction: row;
+      }
     }
   </style>
 `;

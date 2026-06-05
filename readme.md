@@ -4,7 +4,7 @@
 
 - parse clues
     - [x] normalize clue items, make sure all of them follow `{ number, clue }`
-    - [ ] give id to clues, map cells to clues
+    - [x] give id to clues, map cells to clues
     - [ ] map clue id to direction swap clue id
 
 - state management

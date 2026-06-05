@@ -14,15 +14,20 @@ export class Signal<T> {
   }
 
   set value(newValue: T) {
+    const previous = this._value;
     this._value = newValue;
-    this.subscribers.forEach(sub => sub(this._value));
+    this.subscribers.forEach(sub => sub(this._value, previous));
   }
 
   subscribe(callback: Subscriber<T>) {
     this.subscribers.push(callback);
 
-    return () => {
-      this.subscribers = this.subscribers.filter(sub => sub !== callback);
+    return {
+      unsubscribe: () => {
+        this.subscribers = this.subscribers.filter(sub => sub !== callback);
+      },
     };
   }
 }
+
+export const currentClue = new Signal<string>(null!);

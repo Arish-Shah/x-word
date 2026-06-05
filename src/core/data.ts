@@ -10,6 +10,7 @@ import type {
   Dir,
   Direction,
 } from "./types";
+import { getCellValue } from "./util";
 
 export class Data {
   ipuz: Ipuz;
@@ -24,21 +25,20 @@ export class Data {
   }
 
   parseClues(clues: IpuzClues): ParsedClues {
-    const parseClue = (clue: IpuzClue, suffix: Dir): [string, ParsedClue] =>
+    const parseClue = (clue: IpuzClue, suffix: Direction): [string, ParsedClue] =>
       Array.isArray(clue)
-        ? [clue[0] + suffix, { number: clue[0], clue: clue[1], cells: [] }]
-        : [clue.number + suffix, { ...clue, cells: [] }];
+        ? [`${clue[0]}-${suffix}`, { number: clue[0], clue: clue[1], cells: [] }]
+        : [`${clue.number}-${suffix}`, { ...clue, cells: [] }];
 
     return {
-      Across: Object.fromEntries(clues.Across.map(clue => parseClue(clue, "A"))),
-      Down: Object.fromEntries(clues.Down.map(clue => parseClue(clue, "D"))),
+      Across: Object.fromEntries(
+        clues.Across.map(clue => parseClue(clue, "Across"))),
+      Down: Object.fromEntries(
+        clues.Down.map(clue => parseClue(clue, "Down"))),
     };
   }
 
   mapClueToCells(dimensions: IpuzDimensions, puzzle: IpuzPuzzle) {
-    const value = (cell: IpuzPuzzleCell) =>
-      typeof cell === "object" && cell !== null ? cell.cell : cell;
-
     const walkDirection = (direction: Dir, x: number, y: number) => {
       const clues = direction === "A" ? this.clues.Across : this.clues.Down;
 
@@ -48,7 +48,7 @@ export class Data {
 
         for (let j = 0; j < x; j++) {
           const [r, c] = direction === "A" ? [i, j] : [j, i];
-          const cell = value(puzzle[r][c]);
+          const cell = getCellValue(puzzle[r][c]);
 
           if (cell === null || cell === "#") {
             if (id && id in clues) clues[id].cells = cells;

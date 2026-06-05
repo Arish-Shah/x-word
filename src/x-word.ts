@@ -9,9 +9,16 @@ const template = document.createElement("template");
 template.innerHTML = `
   <style>
     :host {
+      padding: 0.5rem;
       display: flex;
       flex-direction: column;
-      padding: 0.5rem;
+      gap: 1rem;
+    }
+
+    @media (min-width: 740px) {
+      :host {
+        flex-direction: row;
+      }
     }
   </style>
 `;

@@ -30,4 +30,5 @@ export type ParsedClues = Record<Direction, Record<string, ParsedClue>>;
 /* misc types */
 export type Dir = "A" | "D";
 
-export type Subscriber<T> = (value: T) => void;
+export type Subscriber<T> = (value: T, previous: T) => void;
+export type Subscription = { unsubscribe: () => void; };

@@ -291,29 +291,45 @@ template3.innerHTML = `
       gap: 1rem;
     }
 
+    h1 {
+      font-size: 1.25rem;
+      margin: 1rem 0;
+    }
+
     @media (min-width: 740px) {
       :host {
         flex-direction: row;
       }
     }
   </style>
+
+  <div class="container"></div>
+  <div class="container"></div>
 `;
 
 class XWord extends HTMLElement {
+  data;
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
     this.shadowRoot.appendChild(template3.content.cloneNode(true));
   }
   async connectedCallback() {
-    const data = await Data.init(this.src);
+    this.data = await Data.init(this.src);
+    this.render();
+  }
+  render() {
+    const containers = this.shadowRoot.querySelectorAll(".container");
+    const heading = document.createElement("h1");
+    heading.textContent = this.data.ipuz.title || "crossword";
     const grid = document.createElement("x-word-grid");
-    grid.dimensions = data.ipuz.dimensions;
-    grid.puzzle = data.ipuz.puzzle;
+    grid.dimensions = this.data.ipuz.dimensions;
+    grid.puzzle = this.data.ipuz.puzzle;
     const clues = document.createElement("x-word-clues");
-    clues.clues = data.clues;
-    this.shadowRoot.appendChild(grid);
-    this.shadowRoot.appendChild(clues);
+    clues.clues = this.data.clues;
+    containers[0].appendChild(heading);
+    containers[0].appendChild(grid);
+    containers[1].appendChild(clues);
   }
   get src() {
     return this.getAttribute("src");

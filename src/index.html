@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>x-word</title>
     <style>
-      :root {}
+      @import url("https://fonts.googleapis.com/css2?family=Gelasio:wght@400..700&display=swap");
+
+      :root {
+        --x-word-font: "Gelasio", serif;
+      }
 
       * {
         margin: 0;
@@ -15,8 +19,13 @@
     <script src="./x-word.ts" type="module"></script>
   </head>
   <body>
-    <!-- <x-word src="./puzzles/20252711-nyt-mini.ipuz"></x-word> -->
-    <x-word src="./puzzles/first.ipuz"></x-word>
-    <!-- <x-word src="./puzzles/hightech-mergers.ipuz"></x-word> -->
+    <script>
+      const params = new URL(location.href).searchParams;
+      const src = params.get("ipuz") || "./puzzles/first.ipuz";
+
+      const xWord = document.createElement("x-word");
+      xWord.src = src;
+      document.body.appendChild(xWord);
+    </script>
   </body>
 </html>

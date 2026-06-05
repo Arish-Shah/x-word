@@ -7,14 +7,14 @@ template.innerHTML = `
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :host {
-      font-size: 0.875rem;
+      font-size: 1rem;
       display: flex;
       flex-direction: column;
       gap: 1rem;
     }
 
     h3 {
-      font-size: 1rem;
+      font-size: 1.15rem;
       padding: 0.25rem 0;
       border-top: 1px solid var(--x-word-button);
     }

@@ -12,6 +12,7 @@ sheet.replaceSync(`
 
     x-word {
       font-family: var(--x-word-font);
+      -webkit-tap-highlight-color: transparent;
     }
   }
 `);
